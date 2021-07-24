@@ -1,5 +1,5 @@
 <p align="center">
-Add Homebrew's shell environment to <a href="https://xon.sh">xonsh shell</a> on macOS/Linux
+Add <a href="https://brew.sh"><b>Homebrew</b></a>'s shell environment to <a href="https://xon.sh"><b>xonsh</b></a> shell on <b>macOS</b>/<b>Linux</b>
 <br/>
 (alternative to <a href="https://docs.brew.sh/Homebrew-on-Linux">shellenv</a>).
 </p>
@@ -32,16 +32,23 @@ Add this to your xonsh run control file (`~/.xonshrc` or `~/.config/rc.xsh`):
 xontrib load homebrew
 ```
 
-Set the level of verbosity via `$XONTRIB_LINUXBREW_LOGLEVEL` to __0–3__:
+Set custom Homebrew installation path via `$XONTRIB_HOMEBREW_PATHBREW` to `/full/path/to/bin/brew` if it's not installed at these default paths (which always take precedence):
+
+| macOS                   	| Linux                                	|
+|:------------------------	|:-------------------------------------	|
+| `/usr/local/bin/brew`   	| `/home/linuxbrew/.linuxbrew/bin/brew`	|
+| `/opt/homebrew/bin/brew`	| `~/.linuxbrew/bin/brew`              	|
+
+Set the level of verbosity via `$XONTRIB_HOMEBREW_LOGLEVEL` to __0–3__ (default __1__):
 
   - 0 print nothing (fail silently)
-  - 1 (default) print errors (e.g. can't find brew at default locations)
-  - 2 print warnings (e.g parsing errors)
+  - __1__ print errors (e.g. can't find `brew` at default locations)
+  - 2 print warnings (e.g issues when parsing `shellenv`)
   - 3 print more verbose messages
 
 ## Known issues
 
-Only default installation paths (`~/.linuxbrew` and `/home/linuxbrew/.linuxbrew`) are supported.
+To be discovered.
 
 ## Credits
 
