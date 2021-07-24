@@ -5,6 +5,7 @@ from builtins	import __xonsh__	# XonshSession (${...} is '__xonsh__.env')
 __all__ = ()
 
 _log     	= __xonsh__.env.get('XONTRIB_HOMEBREW_LOGLEVEL', 1) 	# 0 none, 1 error, 2 warning, 3 extra
+_brewpath	= __xonsh__.env.get('XONTRIB_HOMEBREW_PATHBREW', '')	# custom Homebrew install path
 
 def _SetBrewEnv():
   if not platform.ON_DARWIN and not platform.ON_LINUX:
@@ -15,12 +16,26 @@ def _SetBrewEnv():
     if _log >= 3:
       print("xontrib-Homebrew: HOMEBREW_PREFIX already set, exiting")
     return
-  if p'/home/linuxbrew/.linuxbrew/bin/brew'.exists():
-    LBS = $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-  elif pf'{path.join(path.expanduser("~"), ".linuxbrew/bin/brew")}'.exists():
-    LBS = $(pf'{path.join(path.expanduser("~"), ".linuxbrew/bin/brew")}' shellenv)
-  else:
   HBS = ''
+  if platform.ON_LINUX:
+    if      p'/home/linuxbrew/.linuxbrew/bin/brew'.exists():
+      HBS = $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    elif      pf'{path.join(path.expanduser("~"), ".linuxbrew/bin/brew")}'.exists():
+      HBS = $(pf'{path.join(path.expanduser("~"), ".linuxbrew/bin/brew")}' shellenv)
+    elif _brewpath and pf'{_brewpath}'.exists():
+      if path.basename(path.normpath(pf'{_brewpath}')).casefold() == 'brew':
+        HBS = $(pf'{_brewpath}' shellenv)
+      elif pf'{_brewpath}/brew'.exists():
+        HBS = $(pf'{_brewpath}/brew' shellenv)
+    else:
+      if _log >= 1:
+        print("xontrib-Homebrew: ERROR: Can't find 'brew' in either of these locations:\n" + \
+              "  /home/linuxbrew/.linuxbrew/bin/brew\n" + \
+              "  ~/.linuxbrew/bin/brew")
+        if _brewpath:
+          print(f"  {_brewpath}\n" + \
+                f"  {_brewpath}/brew")
+      return
   if not HBS:
     if _log >= 1:
       print("xontrib-Homebrew: ERROR: got an empty 'brew shellenv' result")
