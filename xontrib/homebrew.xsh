@@ -17,6 +17,25 @@ def _SetBrewEnv():
       print("xontrib-Homebrew: HOMEBREW_PREFIX already set, exiting")
     return
   HBS = ''
+  if platform.ON_DARWIN:
+    if      p'/usr/local/bin/brew'.exists():
+      HBS = $(/usr/local/bin/brew shellenv)
+    elif    p'/opt/homebrew/bin/brew'.exists():
+      HBS = $(/opt/homebrew/bin/brew shellenv)
+    elif _brewpath and pf'{_brewpath}'.exists():
+      if path.basename(path.normpath(pf'{_brewpath}')).casefold() == 'brew':
+        HBS = $(pf'{_brewpath}' shellenv)
+      elif pf'{_brewpath}/brew'.exists():
+        HBS = $(pf'{_brewpath}/brew' shellenv)
+    else:
+      if _log >= 1:
+        print("xontrib-Homebrew: ERROR: Can't find 'brew' in either of these locations:\n" + \
+              "  /usr/local/bin/brew\n" + \
+              "  /opt/homebrew/bin/brew")
+        if _brewpath:
+          print(f"  {_brewpath}\n" + \
+                f"  {_brewpath}/brew")
+      return
   if platform.ON_LINUX:
     if      p'/home/linuxbrew/.linuxbrew/bin/brew'.exists():
       HBS = $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
