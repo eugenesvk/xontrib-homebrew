@@ -1,18 +1,18 @@
 from os      	import path
 from xonsh   	import platform
-from builtins	import __xonsh__	# XonshSession (${...} is '__xonsh__.env')
+from xonsh.built_ins	import XSH # XonshSession (${...} is 'XSH.env')
 
 __all__ = ()
 
-_log     	= __xonsh__.env.get('XONTRIB_HOMEBREW_LOGLEVEL', 1) 	# 0 none, 1 error, 2 warning, 3 extra
-_brewpath	= __xonsh__.env.get('XONTRIB_HOMEBREW_PATHBREW', '')	# custom Homebrew install path
+_log     	= XSH.env.get('XONTRIB_HOMEBREW_LOGLEVEL', 1) 	# 0 none, 1 error, 2 warning, 3 extra
+_brewpath	= XSH.env.get('XONTRIB_HOMEBREW_PATHBREW', '')	# custom Homebrew install path
 
 def _SetBrewEnv():
   if not platform.ON_DARWIN and not platform.ON_LINUX:
     if _log >= 3:
       print("xontrib-Homebrew: neither macOS nor Linux, exiting")
     return
-  if 'HOMEBREW_PREFIX' in __xonsh__.env: # don't overwrite existing env var
+  if 'HOMEBREW_PREFIX' in XSH.env: # don't overwrite existing env var
     if _log >= 3:
       print("xontrib-Homebrew: HOMEBREW_PREFIX already set, exiting")
     return
@@ -88,12 +88,10 @@ def _SetBrewEnv():
       print("xontrib-Homebrew: WARNING: expected 6 variables from shellenv output, but instead got " + str(len(HBS)))
 
   # 2. Create empty env vars if they don't already exist
-  if 'PATH'    	not in __xonsh__.env:
-    $PATH      	= ''
-  if 'MANPATH' 	not in __xonsh__.env:
-    $MANPATH   	= ''
-  if 'INFOPATH'	not in __xonsh__.env:
-    $INFOPATH  	= ''
+  startPath	= ['PATH', 'MANPATH', 'INFOPATH']
+  for  env_path in startPath:
+    if env_path not in XSH.env:
+      XSH.env[env_path] = ''
 
   # 3. Test whether each line wants to assign a Location var or add a value to some PATH
   startLoc 	= 'HOMEBREW_' # '_PREFIX', '_CELLAR', '_REPOSITORY'
