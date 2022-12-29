@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier
+_commit: v0.1.0
+_src_path: gh:xonsh/xontrib-template
+email: es.bugzilla@gmail.com
+enable_autoloading: true
+enable_pre_commit_hooks: true
+full_name: Evgeny
+github_username: eugenesvk
+has_aliases: false
+has_events: false
+package_manager: poetry
+project_name: homebrew
+project_package_name: homebrew
+project_repo_name: xontrib-homebrew
+project_short_description: Add Homebrew's shell environment to xonsh on macOS/Linux
+pure_py: true
+py_module_name: xontrib_homebrew
+version: 0.1.0
+
