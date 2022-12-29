@@ -25,6 +25,12 @@ xpip install xontrib-homebrew
 # or: xpip install -U git+https://github.com/eugenesvk/xontrib-homebrew
 ```
 
+This xontrib will get loaded automatically for interactive sessions; to stop this, set
+
+```xonsh
+$XONTRIBS_AUTOLOAD_DISABLED = {"homebrew", }
+```
+
 ## Usage
 
 Add this to your xonsh run control file (`~/.xonshrc` or `~/.config/rc.xsh`):
