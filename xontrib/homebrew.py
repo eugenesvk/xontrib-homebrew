@@ -101,9 +101,8 @@ def _SetBrewEnv():
       XSH.env[env_path] = ''
 
   # 3. Test whether each line wants to assign a Location var or add a value to some PATH
-  startLoc 	= 'HOMEBREW_' # '_PREFIX', '_CELLAR', '_REPOSITORY'
-  startPath	= ['PATH', 'MANPATH', 'INFOPATH']
-  matches  	= []
+  startLoc	= 'HOMEBREW_' # '_PREFIX', '_CELLAR', '_REPOSITORY'
+  matches 	= []
 
   for i, cmd in enumerate(HBS):
     if cmd.startswith(startLoc):	# Location vars can be executed as is
@@ -127,8 +126,7 @@ def _SetBrewEnv():
     if _log >= 3:
       for i in sorted(matches, reverse=True):
         del HBS[i]
-      print("Remaining items:")
-      print(HBS)
+      print(f"Remaining items: {HBS}")
     return
 
 _SetBrewEnv()
