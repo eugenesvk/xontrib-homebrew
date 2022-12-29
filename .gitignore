@@ -1,3 +1,11 @@
+# test folder
+\[test\]
+# project's built/temp docs
+Changelog.html
+ReadMe.html
+ToDo.html
+ToDo.md
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
