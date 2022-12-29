@@ -1,5 +1,6 @@
 from os      	import path
 from xonsh   	import platform
+from pathlib        	import Path
 from xonsh.built_ins	import XSH # XonshSession (${...} is 'XSH.env')
 
 __all__ = ()
@@ -16,17 +17,17 @@ def _SetBrewEnv():
     if _log >= 3:
       print("xontrib-Homebrew: HOMEBREW_PREFIX already set, exiting")
     return
-  HBS = ''
+  HBS = None; full_cmd = None
   if platform.ON_DARWIN:
-    if      p'/usr/local/bin/brew'.exists():
-      HBS = $(/usr/local/bin/brew shellenv)
-    elif    p'/opt/homebrew/bin/brew'.exists():
-      HBS = $(/opt/homebrew/bin/brew shellenv)
-    elif _brewpath and pf'{_brewpath}'.exists():
-      if path.basename(path.normpath(pf'{_brewpath}')).casefold() == 'brew':
-        HBS = $(pf'{_brewpath}' shellenv)
-      elif pf'{_brewpath}/brew'.exists():
-        HBS = $(pf'{_brewpath}/brew' shellenv)
+    if     (test_path := Path('/usr/local/bin/brew'   )).exists():
+      full_cmd   = [test_path,'shellenv']
+    elif   (test_path := Path('/opt/homebrew/bin/brew')).exists():
+      full_cmd   = [test_path,'shellenv']
+    elif   _brewpath and Path(f'{_brewpath}'      ).exists():
+      if   (test_path := Path(f'{_brewpath}'     )).stem.casefold() == 'brew':
+        full_cmd = [test_path,'shellenv']
+      elif (test_path := Path(f'{_brewpath}/brew')).exists():
+        full_cmd = [test_path,'shellenv']
     else:
       if _log >= 1:
         print("xontrib-Homebrew: ERROR: Can't find 'brew' in either of these locations:\n" + \
@@ -37,15 +38,15 @@ def _SetBrewEnv():
                 f"  {_brewpath}/brew")
       return
   if platform.ON_LINUX:
-    if      p'/home/linuxbrew/.linuxbrew/bin/brew'.exists():
-      HBS = $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    elif      pf'{path.join(path.expanduser("~"), ".linuxbrew/bin/brew")}'.exists():
-      HBS = $(pf'{path.join(path.expanduser("~"), ".linuxbrew/bin/brew")}' shellenv)
-    elif _brewpath and pf'{_brewpath}'.exists():
-      if path.basename(path.normpath(pf'{_brewpath}')).casefold() == 'brew':
-        HBS = $(pf'{_brewpath}' shellenv)
-      elif pf'{_brewpath}/brew'.exists():
-        HBS = $(pf'{_brewpath}/brew' shellenv)
+    if     (test_path := Path('/home/linuxbrew/.linuxbrew/bin/brew')).exists():
+      full_cmd   = [test_path,'shellenv']
+    elif   (test_path := Path("~",".linuxbrew/bin/brew").expanduser()).exists():
+      full_cmd   = [test_path,'shellenv']
+    elif   _brewpath and Path(f'{_brewpath}'      ).exists():
+      if   (test_path := Path(f'{_brewpath}'     )).stem.casefold() == 'brew':
+        full_cmd = [test_path,'shellenv']
+      elif (test_path := Path(f'{_brewpath}/brew')).exists():
+        full_cmd = [test_path,'shellenv']
     else:
       if _log >= 1:
         print("xontrib-Homebrew: ERROR: Can't find 'brew' in either of these locations:\n" + \
