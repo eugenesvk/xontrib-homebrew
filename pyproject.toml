@@ -19,8 +19,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 
-[tool.poetry.plugins."xonsh.xontribs"]
-"homebrew" = "xontrib_homebrew.main"
+packages = [{ include = "xontrib" }]
 
 [tool.poetry.urls]
 Homepage       	= "https://github.com/eugenesvk/xontrib-homebrew"
