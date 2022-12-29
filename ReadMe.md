@@ -54,7 +54,9 @@ Set the level of verbosity via `$XONTRIB_HOMEBREW_LOGLEVEL` to __0–3__ (defaul
 
 ## Known issues
 
-To be discovered.
+- Xontrib autoload currently can't be disabled due to a [xonsh bug](https://github.com/xonsh/xonsh/issues/5020), so if you need precise control over when your environment variables are set (e.g., whether `/path/to/homebrew/bin` is at the top of `PATH`), try installing from a `deauto` branch:</br>
+  `xpip install -U git+https://github.com/eugenesvk/xontrib-homebrew@deauto`
+- Likely due to the same bug your `$XONTRIB_HOMEBREW_PATHBREW` and `$XONTRIB_HOMEBREW_LOGLEVEL` env vars might be ignored in the autoloaded version, so install the `@deauto` version mentioned above
 
 ## Credits
 
