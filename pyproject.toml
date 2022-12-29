@@ -1,64 +1,50 @@
-
 [tool.poetry]
-name = "xontrib-homebrew"
-version = "0.1.0"
-description = "Add Homebrew's shell environment to xonsh on macOS/Linux"
-authors = ["Evgeny <es.bugzilla@gmail.com>"]
+name       	= "xontrib-homebrew"
+version    	= "0.1.0"
+description	= "Add Homebrew's shell environment to xonsh on macOS/Linux"
+authors    	= ["Evgeny <es.bugzilla@gmail.com>"]
+license    	= "MIT"
+readme     	= "ReadMe.md"
+repository 	= "https://github.com/eugenesvk/xontrib-homebrew"
+keywords   	= ['xontrib', 'xonsh']
 
-license = "MIT"
-readme = "README.md"
-
-repository = "https://github.com/eugenesvk/xontrib-homebrew"
-keywords = ['xontrib', 'xonsh']
 classifiers = [
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Topic :: System :: Shells",
-    "Topic :: System :: System Shells",
-    "Topic :: Terminals",
-    "Programming Language :: Python :: 3",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Topic :: System :: Shells",
+  "Topic :: System :: System Shells",
+  "Topic :: Terminals",
+  "Programming Language :: Python :: 3",
 ]
-    
-
-
 
 [tool.poetry.plugins."xonsh.xontribs"]
 "homebrew" = "xontrib_homebrew.main"
 
-
-
 [tool.poetry.urls]
-
-Homepage = "https://github.com/eugenesvk/xontrib-homebrew"
-Documentation = "https://github.com/eugenesvk/xontrib-homebrew/blob/master/README.md"
-Code = "https://github.com/eugenesvk/xontrib-homebrew"
-"Issue tracker" = "https://github.com/eugenesvk/xontrib-homebrew/issues"
-
+Homepage       	= "https://github.com/eugenesvk/xontrib-homebrew"
+Documentation  	= "https://github.com/eugenesvk/xontrib-homebrew/blob/master/ReadMe.md"
+Code           	= "https://github.com/eugenesvk/xontrib-homebrew"
+"Issue tracker"	= "https://github.com/eugenesvk/xontrib-homebrew/issues"
 
 [tool.poetry.dependencies]
-python = ">=3.7"
-xonsh = ">=0.12.5"
-
-
+python 	= ">=3.7"
+xonsh 	= ">=0.12.5"
 
 [tool.poetry.dev-dependencies]
 pytest = ">=7.0"
 
-
-
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
+requires     	= ["poetry-core>=1.0.0"]
+build-backend	= "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
 
 [tool.black]
-include = '\.pyi?$'
-force-exclude = '''
+include      	= '\.pyi?$'
+force-exclude	= '''
 /(
     \.git
   | \.hg
