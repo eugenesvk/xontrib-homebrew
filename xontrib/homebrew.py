@@ -1,7 +1,7 @@
-from os      	import path
-from xonsh   	import platform
 import subprocess
+from os             	import path
 from pathlib        	import Path
+from xonsh          	import platform
 from xonsh.built_ins	import XSH # XonshSession (${...} is 'XSH.env')
 
 __all__ = ()
@@ -73,7 +73,7 @@ def _SetBrewEnv():
     export MANPATH="/usr/local/share/man${MANPATH+:$MANPATH}:";
     export INFOPATH="/usr/local/share/info:${INFOPATH:-}";
   """
-  """ ... or this (Linux):
+  """ ... or                                       this (Linux):
     export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
     export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
     export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
