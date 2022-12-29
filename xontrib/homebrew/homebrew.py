@@ -2,19 +2,19 @@ import subprocess
 from os             	import path
 from pathlib        	import Path
 from xonsh          	import platform
-from xonsh.built_ins	import XonshSession #${...} is 'XonshSession.env')
+from xonsh.built_ins	import XSH
 
 __all__ = ()
 
-def _SetBrewEnv(xsh):
-  _log      = xsh.env.get('XONTRIB_HOMEBREW_LOGLEVEL', 1)   # 0 none, 1 error, 2 warning, 3 extra
-  _brewpath = xsh.env.get('XONTRIB_HOMEBREW_PATHBREW', '')  # custom Homebrew install path
+def _SetBrewEnv():
+  _log      = XSH.env.get('XONTRIB_HOMEBREW_LOGLEVEL', 1)   # 0 none, 1 error, 2 warning, 3 extra
+  _brewpath = XSH.env.get('XONTRIB_HOMEBREW_PATHBREW', '')  # custom Homebrew install path
 
   if not platform.ON_DARWIN and not platform.ON_LINUX:
     if _log >= 3:
       print("xontrib-Homebrew: neither macOS nor Linux, exiting")
     return
-  if 'HOMEBREW_PREFIX' in xsh.env: # don't overwrite existing env var
+  if 'HOMEBREW_PREFIX' in XSH.env: # don't overwrite existing env var
     if _log >= 3:
       print("xontrib-Homebrew: HOMEBREW_PREFIX already set, exiting")
     return
@@ -97,8 +97,8 @@ def _SetBrewEnv(xsh):
   # 2. Create empty env vars if they don't already exist
   startPath = ['PATH', 'MANPATH', 'INFOPATH']
   for  env_path in startPath:
-    if env_path not in xsh.env:
-      xsh.env[env_path] = ''
+    if env_path not in XSH.env:
+      XSH.env[env_path] = ''
 
   # 3. Test whether each line wants to assign a Location var or add a value to some PATH
   startLoc  = 'HOMEBREW_' # '_PREFIX', '_CELLAR', '_REPOSITORY'
@@ -108,7 +108,7 @@ def _SetBrewEnv(xsh):
     if cmd.startswith(startLoc):  # Location vars can be executed as is
       if '=' in HBS[i]:
         env_var,val = HBS[i].split('=') # split HOMEBREW_X="VALUE"
-        xsh.env[env_var] = val.strip('"')
+        XSH.env[env_var] = val.strip('"')
       matches.append(i)
     elif cmd.startswith(tuple(startPath)):  # PATH vars need to be appended to PATH lists
       if cmd.find('=') == -1:               # something is wrong, '=' not found after 'PATH'
@@ -119,7 +119,7 @@ def _SetBrewEnv(xsh):
         cmdVar = cmdSplit[0]                            # 'PATH'
         cmdVal = cmdSplit[1].replace('"','').split(':') # split "path1:path2"
         for pathi in reversed(cmdVal):
-          xsh.env.get(f"{cmdVar}").add(pathi, front=True, replace=True) # env lookup 'PATH' and add each path
+          XSH.env.get(f"{cmdVar}").add(pathi, front=True, replace=True) # env lookup 'PATH' and add each path
   if len(matches) != HBVarCount:
     if _log >= 2:
       print(f"xontrib-Homebrew: WARNING: expected to successfully parse {HBVarCount} variables from shellenv output, but only managed to parse " + str(len(matches)))
@@ -128,7 +128,3 @@ def _SetBrewEnv(xsh):
         del HBS[i]
       print(f"Remaining items: {HBS}")
     return
-
-
-def _load_xontrib_(xsh: XonshSession, **_):
-  _SetBrewEnv(xsh)
