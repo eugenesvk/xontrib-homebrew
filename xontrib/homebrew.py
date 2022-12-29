@@ -81,6 +81,7 @@ def _SetBrewEnv():
     export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
     export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
   """
+  HBVarCount = 6
   # 1. Remove bashisms
   HBS = HBS.replace(r'export '              	, '')\
            .replace(r'${PATH+:$PATH}'       	, '')\
@@ -89,9 +90,9 @@ def _SetBrewEnv():
            .split(';\n')
   if HBS[-1] == '': # remove the last (empty) line
     del HBS[-1]
-  if len(HBS) != 6:
+  if len(HBS) != HBVarCount:
     if _log >= 2:
-      print("xontrib-Homebrew: WARNING: expected 6 variables from shellenv output, but instead got " + str(len(HBS)))
+      print(f"xontrib-Homebrew: WARNING: expected {HBVarCount} variables from shellenv output, but instead got " + str(len(HBS)))
 
   # 2. Create empty env vars if they don't already exist
   startPath	= ['PATH', 'MANPATH', 'INFOPATH']
@@ -118,9 +119,9 @@ def _SetBrewEnv():
         cmdVal = cmdSplit[1].replace('"','').split(':')	# split "path1:path2"
         for pathi in reversed(cmdVal):
           ${cmdVar}.add(pathi, front=True, replace=True) # env lookup 'PATH' and add each path
-  if len(matches) != 6:
+  if len(matches) != HBVarCount:
     if _log >= 2:
-      print("xontrib-Homebrew: WARNING: expected to successfully parse 6 variables from shellenv output, but only managed to parse " + str(len(matches)))
+      print(f"xontrib-Homebrew: WARNING: expected to successfully parse {HBVarCount} variables from shellenv output, but only managed to parse " + str(len(matches)))
     if _log >= 3:
       for i in sorted(matches, reverse=True):
         del HBS[i]
