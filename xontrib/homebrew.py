@@ -1,5 +1,6 @@
 from os      	import path
 from xonsh   	import platform
+import subprocess
 from pathlib        	import Path
 from xonsh.built_ins	import XSH # XonshSession (${...} is 'XSH.env')
 
@@ -37,6 +38,8 @@ def _SetBrewEnv():
           print(f"  {_brewpath}\n" + \
                 f"  {_brewpath}/brew")
       return
+    if full_cmd:
+      HBS = subprocess.run(full_cmd,capture_output=True,encoding="UTF-8").stdout
   if platform.ON_LINUX:
     if     (test_path := Path('/home/linuxbrew/.linuxbrew/bin/brew')).exists():
       full_cmd   = [test_path,'shellenv']
@@ -56,6 +59,8 @@ def _SetBrewEnv():
           print(f"  {_brewpath}\n" + \
                 f"  {_brewpath}/brew")
       return
+    if full_cmd:
+      HBS = subprocess.run(full_cmd,capture_output=True,encoding="UTF-8").stdout
   if not HBS:
     if _log >= 1:
       print("xontrib-Homebrew: ERROR: got an empty 'brew shellenv' result")
