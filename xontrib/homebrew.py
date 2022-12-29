@@ -107,7 +107,9 @@ def _SetBrewEnv():
 
   for i, cmd in enumerate(HBS):
     if cmd.startswith(startLoc):	# Location vars can be executed as is
-      execx('$'+HBS[i])         	# assigns env var '$HOMEBREW_X="VALUE"'
+      if '=' in HBS[i]:
+        env_var,val = HBS[i].split('=') # split HOMEBREW_X="VALUE"
+        XSH.env[env_var] = val.strip('"')
       matches.append(i)
     elif cmd.startswith(tuple(startPath)):	# PATH vars need to be appended to PATH lists
       if cmd.find('=') == -1:             	# something is wrong, '=' not found after 'PATH'
@@ -118,7 +120,7 @@ def _SetBrewEnv():
         cmdVar = cmdSplit[0]                           	# 'PATH'
         cmdVal = cmdSplit[1].replace('"','').split(':')	# split "path1:path2"
         for pathi in reversed(cmdVal):
-          ${cmdVar}.add(pathi, front=True, replace=True) # env lookup 'PATH' and add each path
+          XSH.env.get(f"{cmdVar}").add(pathi, front=True, replace=True) # env lookup 'PATH' and add each path
   if len(matches) != HBVarCount:
     if _log >= 2:
       print(f"xontrib-Homebrew: WARNING: expected to successfully parse {HBVarCount} variables from shellenv output, but only managed to parse " + str(len(matches)))
