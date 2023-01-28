@@ -1,6 +1,6 @@
 [tool.poetry]
 name       	= "xontrib-homebrew"
-version    	= "0.2.0"
+version    	= "0.2.1"
 description	= "Add Homebrew's shell environment to xonsh on macOS/Linux"
 authors    	= ["Evgeny <es.bugzilla@gmail.com>"]
 license    	= "MIT"
