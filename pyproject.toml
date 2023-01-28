@@ -29,7 +29,7 @@ Code           	= "https://github.com/eugenesvk/xontrib-homebrew"
 "Issue tracker"	= "https://github.com/eugenesvk/xontrib-homebrew/issues"
 
 [tool.poetry.dependencies]
-python 	= ">=3.7"
+python	= ">=3.8"
 xonsh 	= ">=0.12.5"
 
 [tool.poetry.dev-dependencies]
